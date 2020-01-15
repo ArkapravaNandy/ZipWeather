@@ -14,24 +14,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!--Internal Style Sheet for reformatting-->
     <style>
-      .good{background-color: greenyellow;}
-      .moderate{ background-color: yellow }
+      .good{background-color: greenyellow}
+      .moderate{ background:  yellow;}
       .usg{ background-color: orange; }
-      .unhealthy{ background-color: orangered; }
+      .unhealthy{ background-color: red; }
       .veryunhealthy{ background-color: maroon;}
-      .hazardous{ background-color: brown; }
+      .hazardous{ background-color: brown }
       .jumbotron{
-       margin: 15px;
+        margin: 15px;
+        box-shadow: 10px 10px 5px grey;
       }
       
      body{
-        background-image: url("C:\Django_Weather\weather\ZipWeather\templates\Index_Wallpaper.jpg");
+        background: url("C:\Django_Weather\weather\ZipWeather\templates\photo.jpg");
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-size: cover;
       }
       
     </style>
+    <!--Font Icon pack from Fontawesome.com-->
+    <script src="https://kit.fontawesome.com/a274929d95.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -40,8 +43,11 @@
 
     <nav class="navbar navbar-dark bg-dark">
         
-        <a class="navbar-brand">ZipWeather.com</a>
-        
+        <a class="navbar-brand"><i class="fas fa-cloud-sun-rain"></i>Zip<b>Weather</b>.com</a>
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="About.html">About Us<span class="sr-only">(current)</span></a>
+          </li></ul>
         <form class="form-inline" method="POST" name="zip" action="{% url 'Home' %}">
           {% csrf_token %}
           <input class="form-control mr-sm-2" type="search" placeholder="Enter ZIP Code" aria-label="Enter ZIP Code" name='zip' >
@@ -53,6 +59,16 @@
       {% if api %}
         {% if api == "Error 404...not found!"%}
         <container>
+          <div class="jumbotron usg">
+            <h1 class="display-4">Please Try Again</h1>
+            <p class="lead">The ZIP Code you entered doesn't exist/is invalid.</p>
+            <hr class="my-4">
+            <p></p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          </div>
+        </container>
+        {% elif api == "" %}
+        <container>
           <div class="jumbotron good">
             <h1 class="display-4">Please Try Again</h1>
             <p class="lead">The ZIP Code you entered doesn't exist/is invalid.</p>
@@ -61,11 +77,12 @@
             <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
           </div>
         </container>
+        
         {% else %}     
       <container>
 
       
-      <div class="jumbotron good">
+      <div class="jumbotron {{ jumbo_color }}">
         <h1 class="display-4">{{ api.0.Category.Name }}</h1>
         <p class="lead">Air Quality Index {{ api.0.AQI }} At <b>{{ api.0.ReportingArea }}</b></p>
         <hr class="my-4">
@@ -77,7 +94,7 @@
     {% endif %}
     {% endif %}
     <!--End of Jumbotron-->
-</body>
+      </body>
 
 </html>
 {% endblock %}
