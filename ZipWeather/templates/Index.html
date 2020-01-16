@@ -22,14 +22,25 @@
       .hazardous{ background-color: brown }
       .jumbotron{
         margin: 15px;
-        box-shadow: 10px 10px 5px grey;
+      }
+      .navbar{
+        box-shadow: 0px 5px 5px grey;
       }
       
      body{
-        background: url("C:\Django_Weather\weather\ZipWeather\templates\photo.jpg");
         background-attachment: fixed;
         background-repeat: no-repeat;
         background-size: cover;
+      }
+      .weather{
+        background-color: blueviolet;
+        
+      }
+      .temp{
+        background-color: aquamarine;
+      }
+      .navbar :hover{
+        text-shadow: 2px 2px 2px aliceblue;
       }
       
     </style>
@@ -43,7 +54,7 @@
 
     <nav class="navbar navbar-dark bg-dark">
         
-        <a class="navbar-brand"><i class="fas fa-cloud-sun-rain"></i>Zip<b>Weather</b>.com</a>
+        <a class="navbar-brand" href="Index.html"><i class="fas fa-cloud-sun-rain"></i>Zip<b>Weather</b>.com</a>
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <a class="nav-link" href="About.html">About Us<span class="sr-only">(current)</span></a>
@@ -56,7 +67,7 @@
       </nav></container>
       <!--End of Navbar-->
       <!--Start of Jumbotron-->
-      {% if api %}
+      <!--{% if api %}
         {% if api == "Error 404...not found!"%}
         <container>
           <div class="jumbotron usg">
@@ -79,17 +90,45 @@
         </container>
         
         {% else %}     
-      <container>
+      <container>-->
 
-      
+      <div class="container">
       <div class="jumbotron {{ jumbo_color }}">
-        <h1 class="display-4">{{ api.0.Category.Name }}</h1>
-        <p class="lead">Air Quality Index {{ api.0.AQI }} At <b>{{ api.0.ReportingArea }}</b></p>
+        <h1 class="display-4">Air Quality {{ api.0.Category.Name }}</h1>
+        <p class="lead">AQI {{ api.0.AQI }} At <b>{{ api.0.ReportingArea }}</b></p>
         <hr class="my-4">
         <p>{{ description }}</p>
         <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
       </div>
-    </container>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="jumbotron weather">
+            <h1 class="display-4">{{ api2.weather.0.main }} <i class="fas fa-cloud-sun-rain"></i></h1>
+            <p class="lead">{{ api2.weather.0.description }}</p>
+            <hr class="my-4">
+            <p><b>Pressure</b> {{ api2.main.pressure }} bar  <b>Humidity</b> {{ api2.main.humidity }}</p>
+            
+            <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+          </div>
+        
+        </div>
+        <div class="col-sm">
+          <div class="jumbotron temp">
+            <h1 class="display-4">{{ temp }}°F <i class="fas fa-thermometer-half"></i></h1>
+            <p class="lead">Feels Like {{ temp_feels_like }}°F</p>
+            <hr class="my-4"> 
+            <p><b>Max</b> {{ temp_max }}°F <b>Min</b> {{ temp_min }}°F
+            </p>
+            <!--<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>-->
+          </div>
+        
+        </div>
+        
+        </div>
+      </div>
+    </div>
     
     {% endif %}
     {% endif %}

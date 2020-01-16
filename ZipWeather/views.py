@@ -6,13 +6,18 @@ def home(request):
     import requests
     if(request.method=='POST'):
         zip=request.POST['zip']   
+        api2_request=requests.get("https://api.openweathermap.org/data/2.5/weather?zip="+ zip +",us&APPID=7de275e7e6735d9d4b196915718bae30")
         api_request=requests.get("http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode="+zip+"&distance=25&API_KEY=DF8CE76E-D834-4728-9948-CB7B2AE0CB8E")
         try:
+            api2=json.loads(api2_request.content)
             api=json.loads(api_request.content)
             
         except Exception as e:
             api="Error 404...not found!"
-            
+        temp=round(api2["main"]["temp"]/4, 1)
+        temp_feels_like=round(api2["main"]["feels_like"]/4, 1)
+        temp_min=round(api2["main"]["temp_min"]/4, 1)
+        temp_max=round(api2["main"]["temp_max"]/4, 1)
         if api[0]["Category"]["Name"]=="Good" :
             description="AQI: Good (0 - 50) Air quality is considered satisfactory, and air pollution poses little or no risk"
             jumbo_color="good"
@@ -33,7 +38,7 @@ def home(request):
             jumbo_color="hazardous"
             
         
-        return render(request, 'Index.html', {'api' : api, 'description': description,'jumbo_color': jumbo_color})    
+        return render(request, 'Index.html', {'api' : api, 'description': description,'jumbo_color': jumbo_color, 'api2': api2, 'temp': temp, 'temp_min':temp_min, 'temp_max':temp_max, 'temp_feels_like':temp_feels_like}, )    
     else:
             api_request=requests.get("http://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=20002&distance=5&API_KEY=DF8CE76E-D834-4728-9948-CB7B2AE0CB8E")
             try:
